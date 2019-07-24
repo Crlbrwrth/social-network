@@ -7,7 +7,8 @@
 // )("2 Components needed: Welcome & Registration");
 
 import React from "react";
-import axios from "axios";
+import axios from "./axios";
+import { Link } from "react-router-dom";
 
 export default class Registration extends React.Component {
     constructor(props) {
@@ -17,11 +18,6 @@ export default class Registration extends React.Component {
     }
     submit() {
         console.log("this: ", this.email, this.first, this.last, this.password);
-        // req.session.user = {
-        //     first: req.body.first,
-        //     last: req.body.last,
-        //     email: req.body.email
-        // };
         axios
             .post("/register", {
                 first: this.first,
@@ -30,9 +26,14 @@ export default class Registration extends React.Component {
                 password: this.password
             })
             .then(data => {
-                //if data.success ==> location.replace("/")
-                //if !data.success ==> this.sendState({error: true})
-            });
+                console.log("data: ", data.data);
+                if (data.data.success) {
+                    location.replace("/");
+                } else {
+                    this.setState({ error: true });
+                }
+            })
+            .catch(err => console.log("in registration.js", err.message));
     }
 
     handleChange(e) {
@@ -75,7 +76,7 @@ export default class Registration extends React.Component {
                 <button onClick={this.submit}>Register</button>
                 <br />
                 <p>
-                    You are a member? <a href="#">Log in</a>
+                    You are a member? <Link to="/login">Log in</Link>
                 </p>
             </div>
         );

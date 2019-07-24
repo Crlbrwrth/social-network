@@ -1,9 +1,9 @@
 import React from "react";
-import AnimalsContainer from "./AnimalsContainer";
 import HelloWorld from "./start";
-import axios from "axios";
+import axios from "./axios";
 import Registration from "./registration";
 import Welcome from "./welcome";
+import StartPage from "./startpage";
 
 export default class App extends React.Component {
     constructor() {
@@ -16,6 +16,7 @@ export default class App extends React.Component {
     componentDidMount() {}
 
     handleChange(e) {
+        console.log(e);
         // console.log(e.target.name); // logging e gives undefined
     }
 
@@ -26,30 +27,8 @@ export default class App extends React.Component {
     render() {
         return (
             <div>
-                <Welcome />
-                <Registration />
+                <StartPage />
             </div>
-            // <div>
-            //     <h1>App is running {this.state.name}</h1>
-            //     <AnimalsContainer
-            //         name={this.state.name}
-            //         cutenessScore={this.state.cutenessScore}
-            //     />
-            //     <HelloWorld />
-            //     <form>
-            //         <input
-            //             type="text"
-            //             name="name"
-            //             onChange={this.handleChange}
-            //         />
-            //         <input
-            //             type="text"
-            //             name="cutenessScore"
-            //             onChange={this.handleChange}
-            //         />
-            //         <button onClick={this.handleClick}>Submit</button>
-            //     </form>
-            // </div>
         );
     }
 }

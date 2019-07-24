@@ -3,7 +3,7 @@ const app = express();
 const compression = require("compression");
 const db = require("./utils/db");
 const bc = require("./utils/bc");
-// const csurf = require("csurf");
+const csurf = require("csurf");
 
 app.use(
     require("cookie-session")({
@@ -11,6 +11,13 @@ app.use(
         maxAge: 1000 * 60 * 60 * 24 * 365
     })
 );
+
+app.use(csurf());
+
+app.use(function(req, res, next) {
+    res.cookie("mytoken", req.csrfToken());
+    next();
+});
 
 app.use(require("body-parser").json());
 
@@ -42,29 +49,57 @@ app.get("/getAnimal", (req, res) => {
 });
 
 app.get("/welcome", (req, res) => {
+    console.log("welcome");
     if (req.session.login) res.redirect("/");
+    else res.sendFile(__dirname + "/index.html");
 });
 
 app.get("*", function(req, res) {
+    console.log("**");
     if (!req.session.login) res.redirect("/welcome");
-    else res.redirect("/");
-    // res.sendFile(__dirname + "/index.html");
+    else res.sendFile(__dirname + "/index.html");
 });
 
-app.post("/register", (req, res) => {
-    console.log(req.body);
-    db.addUser(req.body.first, req.body.last, req.body.email, req.body.password)
-        .then(resp => {
-            req.session.user = {
-                first: req.body.first,
-                last: req.body.last,
-                email: req.body.email
-            };
+app.post("/register", async (req, res) => {
+    const { first, last, email, password } = req.body;
+    try {
+        let hash = await bc.hashPassword(password);
+        let id = await db.addUser(first, last, email, hash);
+        req.session.login = true;
+        req.session.user = {
+            first: req.body.first,
+            last: req.body.last,
+            email: req.body.email,
+            id: id.rows[0].id
+        };
+        res.json({ success: true });
+    } catch (e) {
+        console.log("err in post register route", e.message);
+    }
+});
+
+app.post("/login", async (req, res) => {
+    try {
+        let find = await db.checkLogin(req.body.email);
+        let check = await bc.checkPassword(
+            req.body.password,
+            find.rows[0].password
+        );
+        if (check) {
             req.session.login = true;
-            // res.sendStatus(204);
-            res.redirect("/");
-        })
-        .catch(err => console.log("err: ", err));
+            const { first, last, email, id } = find.rows[0];
+            req.session.user = {
+                first: first,
+                last: last,
+                email: email,
+                id: id
+            };
+            res.json({ success: true });
+        }
+    } catch (e) {
+        res.sendStatus(500);
+        console.log("err in post login route", e.message);
+    }
 });
 
 app.listen(8080, function() {

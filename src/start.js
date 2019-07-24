@@ -1,15 +1,19 @@
 // LINTER ISSUES, IGNORE RED UNDERLINING
 import React from "react";
 import ReactDOM from "react-dom";
-import AnimalsContainer from "./AnimalsContainer"; //no curly braces bc of default
 import App from "./App";
-import StartPage from "./startpage";
+import Welcome from "./Welcome";
 
 let ele;
+console.log("here I am");
 
-if (location.pathname == "/welcome") ele = <App />;
-else ele = <StartPage />;
-//loggin in
+if (location.pathname == "/welcome") {
+    console.log("in the if-statement");
+    ele = <Welcome />;
+} else {
+    ele = <App />;
+}
+// loggin in
 // this logic needs to be prepared on the server
 
 ReactDOM.render(ele, document.querySelector("main"));

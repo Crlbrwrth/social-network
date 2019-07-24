@@ -4,7 +4,11 @@ var db = spicedPg("postgres:postgres:asus@localhost:5432/socialnetwork");
 
 exports.addUser = function(first, last, email, password) {
     return db.query(
-        `INSERT INTO users (first, last, email, password) VALUES ($1, $2, $3, $4)`,
+        `INSERT INTO users (first, last, email, password) VALUES ($1, $2, $3, $4) RETURNING id`,
         [first, last, email, password]
     );
+};
+
+exports.checkLogin = function(email) {
+    return db.query(`SELECT * FROM users WHERE email = $1`, [email]);
 };

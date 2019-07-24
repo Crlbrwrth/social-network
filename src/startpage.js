@@ -6,6 +6,6 @@ export default class StartPage extends React.Component {
         super(props);
     }
     render() {
-        return <h2>Nothing to see here, go away!</h2>;
+        return <h2>This is the after login/registration page!</h2>;
     }
 }
