@@ -1,34 +1,40 @@
 import React from "react";
-import HelloWorld from "./start";
 import axios from "./axios";
-import Registration from "./registration";
-import Welcome from "./welcome";
-import StartPage from "./startpage";
+import Uploader from "./uploader";
+import ProfilePic from "./profilepic";
 
 export default class App extends React.Component {
-    constructor() {
-        super();
-        this.state = {};
-        this.handleChange = this.handleChange.bind(this);
-        this.handleClick = this.handleClick.bind(this);
+    constructor(props) {
+        super(props);
+        this.state = {
+            uploaderVisible: false
+        };
     }
 
-    componentDidMount() {}
-
-    handleChange(e) {
-        console.log(e);
-        // console.log(e.target.name); // logging e gives undefined
-    }
-
-    handleClick(e) {
-        e.preventDefault();
+    async componentDidMount() {
+        console.log("mount Mount");
+        const { data } = await axios.get("/user");
+        this.setState(data);
+        console.log("this.state: ", this.state);
     }
 
     render() {
         return (
             <div>
-                <StartPage />
+                <img src={"/logo.jpg"} alt="logo" />
+                <ProfilePic
+                    first={this.state.first}
+                    last={this.state.last}
+                    image={this.state.image || "/default.png"}
+                    onClick={() => this.setState({ uploaderVisible: true })}
+                />
+
+                {this.state.uploaderVisible && <Uploader />}
             </div>
         );
     }
 }
+
+// done={this.setState({})}
+// @UPLOADER: *done = this.setState({image})/>*/}
+// 1 Difference for image upload: update query to set new url

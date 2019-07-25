@@ -12,3 +12,10 @@ exports.addUser = function(first, last, email, password) {
 exports.checkLogin = function(email) {
     return db.query(`SELECT * FROM users WHERE email = $1`, [email]);
 };
+
+exports.addPic = function(url, id) {
+    return db.query(`UPDATE users SET profile_pic = $1 WHERE id = $2`, [
+        url,
+        id
+    ]);
+};

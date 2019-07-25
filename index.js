@@ -4,6 +4,28 @@ const compression = require("compression");
 const db = require("./utils/db");
 const bc = require("./utils/bc");
 const csurf = require("csurf");
+var multer = require("multer");
+const s3 = require("./utils/s3.js");
+var uidSafe = require("uid-safe");
+var path = require("path");
+
+var diskStorage = multer.diskStorage({
+    destination: function(req, file, callback) {
+        callback(null, __dirname + "/uploads");
+    },
+    filename: function(req, file, callback) {
+        uidSafe(24).then(function(uid) {
+            callback(null, uid + path.extname(file.originalname));
+        });
+    }
+});
+
+var uploader = multer({
+    storage: diskStorage,
+    limits: {
+        fileSize: 2097152
+    }
+});
 
 app.use(
     require("cookie-session")({
@@ -41,11 +63,10 @@ if (process.env.NODE_ENV != "production") {
     app.use("/bundle.js", (req, res) => res.sendFile(`${__dirname}/bundle.js`));
 }
 
-app.get("/getAnimal", (req, res) => {
-    res.json({
-        name: "Zebra",
-        cutenessScore: "pretty cute"
-    });
+app.use(express.static("./public"));
+
+app.get("/user", (req, res) => {
+    res.json(req.session.user);
 });
 
 app.get("/welcome", (req, res) => {
@@ -55,7 +76,6 @@ app.get("/welcome", (req, res) => {
 });
 
 app.get("*", function(req, res) {
-    console.log("**");
     if (!req.session.login) res.redirect("/welcome");
     else res.sendFile(__dirname + "/index.html");
 });
@@ -94,11 +114,24 @@ app.post("/login", async (req, res) => {
                 email: email,
                 id: id
             };
+            if (find.rows[0].bio) {
+                req.session.user.bio = find.rows[0].bio;
+            }
+            if (find.rows[0].profile_pic) {
+                req.session.user.profile_pic = find.rows[0].profile_pic;
+            }
             res.json({ success: true });
         }
     } catch (e) {
         res.sendStatus(500);
         console.log("err in post login route", e.message);
+    }
+});
+
+app.post("/picture", uploader.single("file"), s3.upload, async (req, res) => {
+    if (req.file) {
+        let url = "https://s3.amazonaws.com/spicedling/" + req.file.filename;
+        await db.addPic(url, req.session.user.id);
     }
 });
 
