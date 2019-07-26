@@ -5,10 +5,10 @@ const db = require("./utils/db");
 const bc = require("./utils/bc");
 const csurf = require("csurf");
 var multer = require("multer");
-const s3 = require("./utils/s3.js");
+
 var uidSafe = require("uid-safe");
 var path = require("path");
-
+const s3 = require("./utils/s3.js");
 var diskStorage = multer.diskStorage({
     destination: function(req, file, callback) {
         callback(null, __dirname + "/uploads");
@@ -118,7 +118,7 @@ app.post("/login", async (req, res) => {
                 req.session.user.bio = find.rows[0].bio;
             }
             if (find.rows[0].profile_pic) {
-                req.session.user.profile_pic = find.rows[0].profile_pic;
+                req.session.user.image = find.rows[0].profile_pic;
             }
             res.json({ success: true });
         }
@@ -132,6 +132,19 @@ app.post("/picture", uploader.single("file"), s3.upload, async (req, res) => {
     if (req.file) {
         let url = "https://s3.amazonaws.com/spicedling/" + req.file.filename;
         await db.addPic(url, req.session.user.id);
+        req.session.user.image = url;
+        res.json({ url: url });
+    }
+});
+
+app.post("/bio", async (req, res) => {
+    try {
+        let bio = req.body.bio;
+        await db.addBio(bio, req.session.user.id);
+        req.session.user.bio = bio;
+        res.json({ bio: bio });
+    } catch (e) {
+        console.log("err in post /bio", e.message);
     }
 });
 

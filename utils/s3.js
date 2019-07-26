@@ -34,7 +34,7 @@ exports.upload = (req, res, next) => {
         .promise()
         .then(data => {
             // fs.promises.unlink(path);
-            console.log(data);
+            console.log("data: ", data);
             next();
         })
         .catch(err => {

@@ -1,0 +1,30 @@
+body {
+    position: relative;
+}
+
+/* HEADER */
+
+nav {
+    height: 50px;
+    background-color: lightblue;
+}
+
+main {
+}
+
+nav img {
+    height: 50px;
+    width: 50px;
+    float: right;
+}
+
+img[alt="logo"] {
+    float: left;
+}
+
+/*MODALS*/
+
+#uploader {
+    margin: 20px;
+    border: 1px solid black;
+}

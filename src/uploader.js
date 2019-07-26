@@ -12,7 +12,9 @@ export default class Uploader extends React.Component {
         e.preventDefault();
         var formData = new FormData();
         formData.append("file", this.state.file);
-        await axios.post("/picture", formData);
+        let image = await axios.post("/picture", formData);
+        console.log("url: ", image.data.url);
+        this.props.changeImage(image.data.url);
     }
 
     handleChange(e) {
@@ -24,7 +26,7 @@ export default class Uploader extends React.Component {
 
     render() {
         return (
-            <div>
+            <div id="uploader">
                 <h2>Add a profile picture</h2>
                 <input
                     type="file"

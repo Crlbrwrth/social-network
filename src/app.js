@@ -2,12 +2,14 @@ import React from "react";
 import axios from "./axios";
 import Uploader from "./uploader";
 import ProfilePic from "./profilepic";
+import Profile from "./profile";
 
 export default class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            uploaderVisible: false
+            uploaderVisible: false,
+            onClick: () => this.setState({ uploaderVisible: true })
         };
     }
 
@@ -21,15 +23,45 @@ export default class App extends React.Component {
     render() {
         return (
             <div>
-                <img src={"/logo.jpg"} alt="logo" />
-                <ProfilePic
-                    first={this.state.first}
-                    last={this.state.last}
-                    image={this.state.image || "/default.png"}
-                    onClick={() => this.setState({ uploaderVisible: true })}
-                />
+                <nav>
+                    <img src={"/logo.jpg"} alt="logo" />
+                    <ProfilePic
+                        first={this.state.first}
+                        last={this.state.last}
+                        image={this.state.image || "/default.png"}
+                        onClick={() => this.setState({ uploaderVisible: true })}
+                    />
+                </nav>
+                <main>
+                    <Profile
+                        bio={this.state.bio}
+                        image={this.state.image}
+                        first={this.state.first}
+                        last={this.state.last}
+                        updateBio={newBio => {
+                            this.setState({
+                                bio: newBio
+                            });
+                        }}
+                    />
 
-                {this.state.uploaderVisible && <Uploader />}
+                    {!this.state.image && (
+                        <button onClick={this.state.onClick}>
+                            Update image
+                        </button>
+                    )}
+
+                    {this.state.uploaderVisible && (
+                        <Uploader
+                            changeImage={imageUrl => {
+                                this.setState({
+                                    image: imageUrl,
+                                    uploaderVisible: false
+                                });
+                            }}
+                        />
+                    )}
+                </main>
             </div>
         );
     }

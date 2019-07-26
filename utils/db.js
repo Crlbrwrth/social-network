@@ -19,3 +19,7 @@ exports.addPic = function(url, id) {
         id
     ]);
 };
+
+exports.addBio = function(bio, id) {
+    return db.query(`UPDATE users SET bio = $1 WHERE id = $2`, [bio, id]);
+};
