@@ -75,6 +75,16 @@ app.get("/welcome", (req, res) => {
     else res.sendFile(__dirname + "/index.html");
 });
 
+app.get("/user/:id/json", async (req, res) => {
+    try {
+        let infos = await db.getOtherUser(req.params.id);
+        res.json(infos.rows[0]);
+    } catch (e) {
+        console.log("err in /GET /user/:id/json", e.message);
+    }
+    // console.log("infos.rows[0] ", infos.rows[0]);
+});
+
 app.get("*", function(req, res) {
     if (!req.session.login) res.redirect("/welcome");
     else res.sendFile(__dirname + "/index.html");

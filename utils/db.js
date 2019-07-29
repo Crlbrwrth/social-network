@@ -23,3 +23,10 @@ exports.addPic = function(url, id) {
 exports.addBio = function(bio, id) {
     return db.query(`UPDATE users SET bio = $1 WHERE id = $2`, [bio, id]);
 };
+
+exports.getOtherUser = function(id) {
+    return db.query(
+        `SELECT first, last, profile_pic, bio FROM users WHERE id = $1`,
+        [id]
+    );
+};
