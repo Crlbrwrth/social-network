@@ -28,3 +28,19 @@ img[alt="logo"] {
     margin: 20px;
     border: 1px solid black;
 }
+
+.other-user {
+    border: 1ßx solid black;
+}
+
+.other-user img {
+    max-width: 200px;
+    margin: 20px;
+}
+
+.last-users-list img,
+.users-found-list img {
+    width: 70px;
+    height: 70px;
+    display: block;
+}

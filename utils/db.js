@@ -30,3 +30,16 @@ exports.getOtherUser = function(id) {
         [id]
     );
 };
+
+exports.getLastUsers = function() {
+    return db.query(
+        `SELECT first, last, profile_pic FROM users ORDER BY id DESC LIMIT 5`
+    );
+};
+
+exports.getUsersByName = function(str) {
+    return db.query(
+        `SELECT first, last, profile_pic FROM users WHERE first ILIKE $1;`,
+        [str + "%"]
+    );
+};

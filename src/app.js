@@ -4,6 +4,7 @@ import Uploader from "./uploader";
 import ProfilePic from "./profilepic";
 import Profile from "./profile";
 import OtherProfile from "./otherprofile";
+import FindPeople from "./findpeople";
 import { Route, BrowserRouter, Link } from "react-router-dom";
 
 export default class App extends React.Component {
@@ -56,24 +57,13 @@ export default class App extends React.Component {
                             />
 
                             <Route path="/user/:id" component={OtherProfile} />
+                            <Route path="/users" component={FindPeople} />
                         </div>
                     </BrowserRouter>
 
-                    <Profile
-                        bio={this.state.bio}
-                        image={this.state.image}
-                        first={this.state.first}
-                        last={this.state.last}
-                        updateBio={newBio => {
-                            this.setState({
-                                bio: newBio
-                            });
-                        }}
-                    />
-
                     {!this.state.image && (
                         <button onClick={this.state.onClick}>
-                            Update image
+                            Update your profile image
                         </button>
                     )}
 

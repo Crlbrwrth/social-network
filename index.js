@@ -65,6 +65,11 @@ if (process.env.NODE_ENV != "production") {
 
 app.use(express.static("./public"));
 
+app.get("/last-users", async (req, res) => {
+    let resp = await db.getLastUsers();
+    res.json({ result: resp.rows });
+});
+
 app.get("/user", (req, res) => {
     res.json(req.session.user);
 });
@@ -77,12 +82,18 @@ app.get("/welcome", (req, res) => {
 
 app.get("/user/:id/json", async (req, res) => {
     try {
-        let infos = await db.getOtherUser(req.params.id);
-        res.json(infos.rows[0]);
+        let result = await db.getOtherUser(req.params.id);
+        // if (!infos.rows[0]) res.json()
+        res.json(result.rows[0]);
     } catch (e) {
         console.log("err in /GET /user/:id/json", e.message);
     }
     // console.log("infos.rows[0] ", infos.rows[0]);
+});
+
+app.get("/find-users/:str/json", async (req, res) => {
+    let result = await db.getUsersByName(req.params.str);
+    res.json({ data: result.rows });
 });
 
 app.get("*", function(req, res) {
@@ -157,6 +168,8 @@ app.post("/bio", async (req, res) => {
         console.log("err in post /bio", e.message);
     }
 });
+
+// db.getUsersByName("d").then(res => console.log("the result:  ", res.rows));
 
 app.listen(8080, function() {
     console.log("I'm listening.");
