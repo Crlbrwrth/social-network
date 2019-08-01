@@ -30,7 +30,7 @@ export default function FriendButton(props) {
             const { data } = await axios.get(`/add-friend/${props.id}/json`);
             data.result == true ? setFriendReq(true) : setFriendReq(false);
         } catch (e) {
-            console.log("err in add-friend-route", e.message);
+            console.log("err in GET add-friend route", e.message);
         }
     };
 
@@ -45,6 +45,16 @@ export default function FriendButton(props) {
         }
     };
 
+    const acceptRequest = async () => {
+        setReqAccepted(true);
+        setFriendReq(true);
+        try {
+            await axios.get(`/add-friend/${props.id}/json`);
+        } catch (e) {
+            console.log("err in GET add-friend acceptRequest route", e.message);
+        }
+    };
+
     return (
         <div className="friend-button">
             <h2>Manage Friendship</h2>
@@ -54,8 +64,12 @@ export default function FriendButton(props) {
             {friendReq && !reqAccepted && !isSender && (
                 <button onClick={cancelRequest}>Cancel Request</button>
             )}
-            {!reqAccepted && isSender && <button>Accept Friend Request</button>}
-            {friendReq && reqAccepted && <button>End Friendship</button>}
+            {!reqAccepted && isSender && (
+                <button onClick={acceptRequest}>Accept Friend Request</button>
+            )}
+            {friendReq && reqAccepted && (
+                <button onClick={cancelRequest}>End Friendship</button>
+            )}
         </div>
     );
 }

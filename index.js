@@ -43,13 +43,6 @@ app.use(function(req, res, next) {
 
 app.use(require("body-parser").json());
 
-// app.use(csurf());
-// app.use(function(req, res, next) {
-//     res.set("x-frame-options", "deny");
-//     res.locals.csrfToken = req.csrfToken();
-//     next();
-// });
-
 app.use(compression());
 
 if (process.env.NODE_ENV != "production") {
@@ -75,7 +68,6 @@ app.get("/user", (req, res) => {
 });
 
 app.get("/welcome", (req, res) => {
-    console.log("welcome");
     if (req.session.login) res.redirect("/");
     else res.sendFile(__dirname + "/index.html");
 });
@@ -83,12 +75,10 @@ app.get("/welcome", (req, res) => {
 app.get("/user/:id/json", async (req, res) => {
     try {
         let result = await db.getOtherUser(req.params.id);
-        // if (!infos.rows[0]) res.json()
         res.json(result.rows[0]);
     } catch (e) {
         console.log("err in /GET /user/:id/json", e.message);
     }
-    // console.log("infos.rows[0] ", infos.rows[0]);
 });
 
 app.get("/find-users/:str/json", async (req, res) => {
@@ -101,12 +91,17 @@ app.get("/find-users/:str/json", async (req, res) => {
 app.get("/check-request/:id/json", async (req, res) => {
     let isSender, requestSent, friendship;
     try {
-        let resp = await db.checkFriendship(req.params.id, req.session.user.id);
-        resp.rowCount >= 1 ? (isSender = true) : (isSender = false);
+        let resp1 = await db.checkFriendship(
+            req.params.id,
+            req.session.user.id
+        );
         let resp2 = await db.checkFriendship(
             req.session.user.id,
             req.params.id
         );
+        ///
+        ///
+        resp1.rowCount >= 1 ? (isSender = true) : (isSender = false);
         resp2.rowCount >= 1 ? (requestSent = true) : (requestSent = false);
         isSender && requestSent ? (friendship = true) : (friendship = false);
         res.json({

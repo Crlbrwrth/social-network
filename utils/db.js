@@ -52,13 +52,6 @@ exports.insertFriendRequest = function(sender_id, receiver_id) {
     );
 };
 
-exports.acceptFriendRequest = function(sender_id, receiver_id) {
-    return db.query(
-        `UPDATE friends SET accepted = true WHERE (sender_id = $1 AND receiver_id = $2)`,
-        [sender_id, receiver_id]
-    );
-};
-
 exports.denyFriendship = function(sender_id, receiver_id) {
     return db.query(
         `DELETE FROM friends WHERE
