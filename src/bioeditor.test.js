@@ -1,23 +1,46 @@
 import React from "react";
 import BioEditor from "./bioeditor";
-import { render } from "@testing-library/react";
+import axios from "./axios";
+import { render, fireEvent, waitForElement } from "@testing-library/react";
 
-test("Anything happens", () => {
-    const a = 5;
-    expect(a).toBe(5);
-});
+// test("Anything happens", () => {
+//     const a = 5;
+//     expect(a).toBe(5);
+// });
+//
+// test("When no bio is passed to it, an Add-button is rendered.", () => {
+//     const { container } = render(<BioEditor />);
+//     expect(container.querySelector("button").innerHTML).toBe(
+//         "Update Biography"
+//     );
+// });
+//
+// test("When a bio is passed to it, an Edit-button is rendered.", () => {
+//     const { container } = render(<BioEditor bio="text" />);
+//     expect(container.querySelector("button").innerHTML).toBe(
+//         "Update Biography"
+//     );
+// });
+//
+// test(`Clicking either the "Add" or "Edit" button causes a textarea and a "Save" button to be rendered.`, () => {
+//     const { container } = render(<BioEditor />);
+//     fireEvent.click(container.querySelector("button"));
+//     expect(container.querySelector("button").innerHTML).toBe("Commit new Bio");
+// });
 
-test("When no bio is passed to it, an Add-button is rendered.", () => {
+jest.mock("axios");
+
+test(`Clicking the "Save" button causes an ajax request.`, async () => {
+    axios.post.mockResolvedValue({
+        data: {
+            changeBio: "Bio text"
+        }
+    });
+
     const { container } = render(<BioEditor />);
-    expect(container.querySelector("button").innerHTML).toBe(
-        "Update Biography"
-    );
-});
-
-test("When a bio is passed to it, an Edit-button is rendered.", () => {
-    const { container } = render(<BioEditor bio="text" />);
-    expect(container.querySelector("button").innerHTML).toBe(
-        "Update Biography"
+    fireEvent.click(container.querySelector("button"));
+    expect(container.getElementByClassName("bio-text").innerHTML).toBe(
+        "Bio text"
     );
 });
 

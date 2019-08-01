@@ -42,7 +42,7 @@ export default class BioEditor extends React.Component {
                 {this.props.bio && (
                     <div>
                         <h3>Your astonishing Biography</h3>
-                        {<p>{this.props.bio}</p>}
+                        {<p className="bio-text">{this.props.bio}</p>}
                     </div>
                 )}
 
