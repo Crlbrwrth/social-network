@@ -17,10 +17,9 @@ export default class App extends React.Component {
     }
 
     async componentDidMount() {
-        console.log("mount Mount");
         const { data } = await axios.get("/user");
         this.setState(data);
-        console.log("this.state: ", this.state);
+        console.log("this.statev in App: ", this.state);
     }
 
     render() {

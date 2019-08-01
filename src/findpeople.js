@@ -19,7 +19,6 @@ export default function FindPeople(props) {
                 if (val) {
                     let sameInput = true;
                     let { data } = await axios.get(`/find-users/${val}/json`);
-                    console.log("data.data: ", data.data);
                     setUsers(data.data);
                     return () => {
                         sameInput = false;

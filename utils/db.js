@@ -1,4 +1,3 @@
-//////SHUT UP LINTER
 var spicedPg = require("spiced-pg");
 var db = spicedPg("postgres:postgres:asus@localhost:5432/socialnetwork");
 
@@ -26,7 +25,7 @@ exports.addBio = function(bio, id) {
 
 exports.getOtherUser = function(id) {
     return db.query(
-        `SELECT first, last, profile_pic, bio FROM users WHERE id = $1`,
+        `SELECT first, last, profile_pic, bio, id FROM users WHERE id = $1`,
         [id]
     );
 };
@@ -41,5 +40,38 @@ exports.getUsersByName = function(str) {
     return db.query(
         `SELECT first, last, profile_pic FROM users WHERE first ILIKE $1;`,
         [str + "%"]
+    );
+};
+
+// FRIENDSHIP BUTTON
+
+exports.insertFriendRequest = function(sender_id, receiver_id) {
+    return db.query(
+        `INSERT INTO friends (sender_id, receiver_id, accepted) VALUES ($1, $2, false)`,
+        [sender_id, receiver_id]
+    );
+};
+
+exports.acceptFriendRequest = function(sender_id, receiver_id) {
+    return db.query(
+        `UPDATE friends SET accepted = true WHERE (sender_id = $1 AND receiver_id = $2)`,
+        [sender_id, receiver_id]
+    );
+};
+
+exports.denyFriendship = function(sender_id, receiver_id) {
+    return db.query(
+        `DELETE FROM friends WHERE
+        (sender_id = $1 AND receiver_id = $2)
+        OR
+        (sender_id = $2 AND receiver_id = $1)`,
+        [sender_id, receiver_id]
+    );
+};
+
+exports.checkFriendship = function(sender_id, receiver_id) {
+    return db.query(
+        `SELECT * FROM friends WHERE (sender_id = $1 AND receiver_id = $2)`,
+        [sender_id, receiver_id]
     );
 };

@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "./axios";
+import FriendButton from "./friendbutton";
 
 export default class OtherProfile extends React.Component {
     constructor(props) {
@@ -9,8 +10,8 @@ export default class OtherProfile extends React.Component {
     async componentDidMount() {
         const id = this.props.match.params.id;
         const { data } = await axios.get(`/user/${id}/json`);
-        console.log("datawswdd", data);
-        this.setState(data);
+        await this.setState(data);
+        console.log("state in otherprofile", this.state);
     }
     render() {
         return (
@@ -20,6 +21,7 @@ export default class OtherProfile extends React.Component {
                 </h2>
                 <div>{this.state.bio || "No Biography availlable"}</div>
                 <img src={this.state.profile_pic} />
+                <FriendButton id={this.props.match.params.id} />
             </div>
         );
     }

@@ -96,6 +96,47 @@ app.get("/find-users/:str/json", async (req, res) => {
     res.json({ data: result.rows });
 });
 
+//FRIENDSHIP BUTTON REQUESTS
+
+app.get("/check-request/:id/json", async (req, res) => {
+    let isSender, requestSent, friendship;
+    try {
+        let resp = await db.checkFriendship(req.params.id, req.session.user.id);
+        resp.rowCount >= 1 ? (isSender = true) : (isSender = false);
+        let resp2 = await db.checkFriendship(
+            req.session.user.id,
+            req.params.id
+        );
+        resp2.rowCount >= 1 ? (requestSent = true) : (requestSent = false);
+        isSender && requestSent ? (friendship = true) : (friendship = false);
+        res.json({
+            isSender: isSender,
+            requestSent: requestSent,
+            friendship: friendship
+        });
+    } catch (e) {
+        console.log("err in check request route: ", e.message);
+    }
+});
+
+app.get("/add-friend/:id/json", async (req, res) => {
+    let resp = await db.insertFriendRequest(req.session.user.id, req.params.id);
+    if (resp.rowCount == 1) {
+        res.json({ result: true });
+    } else {
+        res.json({ result: false });
+    }
+});
+
+app.get("/end-friendship/:id/json", async (req, res) => {
+    try {
+        await db.denyFriendship(req.session.user.id, req.params.id);
+        res.sendStatus(204);
+    } catch (e) {
+        console.log("err in end-friendship route", e.message);
+    }
+});
+
 app.get("*", function(req, res) {
     if (!req.session.login) res.redirect("/welcome");
     else res.sendFile(__dirname + "/index.html");
@@ -168,8 +209,6 @@ app.post("/bio", async (req, res) => {
         console.log("err in post /bio", e.message);
     }
 });
-
-// db.getUsersByName("d").then(res => console.log("the result:  ", res.rows));
 
 app.listen(8080, function() {
     console.log("I'm listening.");
