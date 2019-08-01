@@ -3,10 +3,20 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import Welcome from "./Welcome";
+import { Provider } from "react-redux";
+import { createStore, applyMiddleware } from "redux";
+import reduxPromise from "redux-promise";
+import reducer from "./reducers";
+
+const store = createStore(reducer, applyMiddleware(reduxPromise));
+
+const elem = (
+    <Provider store={store}>
+        <App />
+    </Provider>
+);
 
 let ele;
-console.log("here I am");
-
 if (location.pathname == "/welcome") {
     console.log("in the if-statement");
     ele = <Welcome />;
