@@ -58,6 +58,21 @@ if (process.env.NODE_ENV != "production") {
 
 app.use(express.static("./public"));
 
+// Redux routes on /friends
+
+app.get("/friends-and-wannabes", async (req, res) => {
+    let output = await db.getFriendsAndWannabes(req.session.user.id);
+    res.json({ output: output });
+});
+
+app.get("/end-a-friendship", (req, res) => {
+    //ppbly can use old route
+});
+
+app.get("/confirm-a-friendship", (req, res) => {
+    //ppbly can use old route
+});
+
 app.get("/last-users", async (req, res) => {
     let resp = await db.getLastUsers();
     res.json({ result: resp.rows });
@@ -90,20 +105,17 @@ app.get("/find-users/:str/json", async (req, res) => {
 
 app.get("/check-request/:id/json", async (req, res) => {
     let isSender, requestSent, friendship;
+    isSender = requestSent = friendship = false;
     try {
-        let resp1 = await db.checkFriendship(
-            req.params.id,
-            req.session.user.id
-        );
-        let resp2 = await db.checkFriendship(
-            req.session.user.id,
-            req.params.id
-        );
+        let resp = await db.checkFriendship(req.params.id, req.session.user.id);
         ///
-        ///
-        resp1.rowCount >= 1 ? (isSender = true) : (isSender = false);
-        resp2.rowCount >= 1 ? (requestSent = true) : (requestSent = false);
-        isSender && requestSent ? (friendship = true) : (friendship = false);
+        if (resp.rows[0].accepted == true) {
+            friendship = isSender = requestSent = true;
+        } else if (resp.rows[0].sender_id == req.session.user.id) {
+            requestSent = true;
+        } else if (resp.rows[0].sender_id == req.params.id) {
+            isSender = true;
+        }
         res.json({
             isSender: isSender,
             requestSent: requestSent,
@@ -116,6 +128,16 @@ app.get("/check-request/:id/json", async (req, res) => {
 
 app.get("/add-friend/:id/json", async (req, res) => {
     let resp = await db.insertFriendRequest(req.session.user.id, req.params.id);
+    if (resp.rowCount == 1) {
+        res.json({ result: true });
+    } else {
+        res.json({ result: false });
+    }
+});
+
+app.get("/accept-friend/:id/json", async (req, res) => {
+    console.log("got here");
+    let resp = await db.acceptFriendRequest(req.session.user.id, req.params.id);
     if (resp.rowCount == 1) {
         res.json({ result: true });
     } else {

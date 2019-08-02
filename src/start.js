@@ -1,19 +1,17 @@
-// LINTER ISSUES, IGNORE RED UNDERLINING
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import Welcome from "./Welcome";
-import { Provider } from "react-redux";
+// REDUX STUFF
 import { createStore, applyMiddleware } from "redux";
 import reduxPromise from "redux-promise";
+import { Provider } from "react-redux";
+import { composeWithDevTools } from "redux-devtools-extension";
 import reducer from "./reducers";
 
-const store = createStore(reducer, applyMiddleware(reduxPromise));
-
-const elem = (
-    <Provider store={store}>
-        <App />
-    </Provider>
+const store = createStore(
+    reducer,
+    composeWithDevTools(applyMiddleware(reduxPromise))
 );
 
 let ele;
@@ -21,10 +19,12 @@ if (location.pathname == "/welcome") {
     console.log("in the if-statement");
     ele = <Welcome />;
 } else {
-    ele = <App />;
+    ele = (
+        <Provider store={store}>
+            <App />
+        </Provider>
+    );
 }
-// loggin in
-// this logic needs to be prepared on the server
 
 ReactDOM.render(ele, document.querySelector("main"));
 

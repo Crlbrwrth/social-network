@@ -49,7 +49,7 @@ export default function FriendButton(props) {
         setReqAccepted(true);
         setFriendReq(true);
         try {
-            await axios.get(`/add-friend/${props.id}/json`);
+            await axios.get(`/accept-friend/${props.id}/json`);
         } catch (e) {
             console.log("err in GET add-friend acceptRequest route", e.message);
         }

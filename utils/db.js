@@ -1,6 +1,18 @@
 var spicedPg = require("spiced-pg");
 var db = spicedPg("postgres:postgres:asus@localhost:5432/socialnetwork");
 
+exports.getFriendsAndWannabes = function(user_id) {
+    return db.query(
+        `SELECT users.id AS uid, first, last, profile_pic, accepted
+        FROM users
+        JOIN friends
+        ON (accepted = false AND receiver_id = $1 AND sender_id = users.id)
+        OR (accepted = true AND receiver_id = $1 AND sender_id = users.id)
+        OR (accepted = true AND sender_id = $1 AND receiver_id = users.id)`,
+        [user_id]
+    );
+};
+
 exports.addUser = function(first, last, email, password) {
     return db.query(
         `INSERT INTO users (first, last, email, password) VALUES ($1, $2, $3, $4) RETURNING id`,
@@ -52,6 +64,13 @@ exports.insertFriendRequest = function(sender_id, receiver_id) {
     );
 };
 
+exports.acceptFriendRequest = function(sender_id, receiver_id) {
+    return db.query(
+        `UPDATE friends SET accepted = true WHERE sender_id = $2 AND receiver_id = $1`,
+        [sender_id, receiver_id]
+    );
+};
+
 exports.denyFriendship = function(sender_id, receiver_id) {
     return db.query(
         `DELETE FROM friends WHERE
@@ -64,7 +83,9 @@ exports.denyFriendship = function(sender_id, receiver_id) {
 
 exports.checkFriendship = function(sender_id, receiver_id) {
     return db.query(
-        `SELECT * FROM friends WHERE (sender_id = $1 AND receiver_id = $2)`,
+        `SELECT * FROM friends
+        WHERE (sender_id = $1 AND receiver_id = $2)
+        OR (sender_id = $2 AND receiver_id = $1)`,
         [sender_id, receiver_id]
     );
 };

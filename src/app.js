@@ -7,6 +7,8 @@ import OtherProfile from "./otherprofile";
 import FindPeople from "./findpeople";
 import { Route, BrowserRouter, Link } from "react-router-dom";
 
+import Friends from "./friends";
+
 export default class App extends React.Component {
     constructor(props) {
         super(props);
@@ -57,6 +59,7 @@ export default class App extends React.Component {
 
                             <Route path="/user/:id" component={OtherProfile} />
                             <Route path="/users" component={FindPeople} />
+                            <Route path="/friends" component={Friends} />
                         </div>
                     </BrowserRouter>
 

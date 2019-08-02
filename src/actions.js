@@ -1,24 +1,30 @@
-// import axios from 'axios';
-//
-// export async function receiveUsers() {
-//     const { data } = await axios.get('/users');
-//     return {
-//         type: 'RECEIVE_USERS',
-//         users: data.users
-//     };
-// }
-//
-// export async function makeHot(id) {
-//     const {data} = await axios.post('/hot/' + id);
-//     return {
-//         type: 'MAKE_HOT',
-//         id
-//     }
-// }
-//
-// export async function makeNot(id) {
-//     const {data} = await axios.post('/not/' + id);
-//     return {
-//         type: 'MAKE_NOT',
-//         id
-//     }
+import axios from "axios";
+
+// creates the action for retrieving the list of friends and wannabes
+export async function retrieveList() {
+    const { data } = await axios.get("/friends-and-wannabes");
+    console.log("data in retrieveList: ", data.output.rows);
+    return {
+        type: "RETRIEVE_LIST",
+        users: data.output.rows
+    };
+}
+
+// accepts a friend request
+export async function acceptRequest(id) {
+    console.log("this thing is running");
+    const { data } = await axios.get(`/accept-friend/${id}/json`);
+    return {
+        type: "ACCEPT_REQUEST",
+        id
+    };
+}
+
+// ends a friendship
+export async function endFriendship(id) {
+    const { data } = await axios.get(`/end-friendship/${id}/json`);
+    return {
+        type: "END_FRIENDSHIP",
+        id
+    };
+}
