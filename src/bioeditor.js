@@ -12,7 +12,6 @@ export default class BioEditor extends React.Component {
     }
 
     handleChange(e) {
-        console.log("e:", e.target.value);
         this.setState({ newBio: e.target.value });
     }
 
@@ -23,7 +22,6 @@ export default class BioEditor extends React.Component {
         });
         this.state.editing = false;
         this.props.changeBio(returned.data.bio);
-        console.log("this.state: ", this.state);
     }
 
     render() {

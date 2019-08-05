@@ -11,7 +11,6 @@ export default class OtherProfile extends React.Component {
         const id = this.props.match.params.id;
         const { data } = await axios.get(`/user/${id}/json`);
         await this.setState(data);
-        console.log("state in otherprofile", this.state);
     }
     render() {
         return (
@@ -22,6 +21,22 @@ export default class OtherProfile extends React.Component {
                 <div>{this.state.bio || "No Biography availlable"}</div>
                 <img src={this.state.profile_pic} />
                 <FriendButton id={this.props.match.params.id} />
+                {this.state.friends && (
+                    <div>
+                        <hr />
+                        <hr />
+                        <h2>{this.state.first}'s Friends</h2>
+                    </div>
+                )}
+                {this.state.friends &&
+                    this.state.friends.map(user => (
+                        <div className="friends-friends" key={user.uid}>
+                            <h4>
+                                {user.first} {user.last}
+                            </h4>
+                            <img src={user.profile_pic} />
+                        </div>
+                    ))}
             </div>
         );
     }

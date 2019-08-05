@@ -13,12 +13,10 @@ export default class Uploader extends React.Component {
         var formData = new FormData();
         formData.append("file", this.state.file);
         let image = await axios.post("/picture", formData);
-        console.log("url: ", image.data.url);
         this.props.changeImage(image.data.url);
     }
 
     handleChange(e) {
-        console.log("e.target: ", e.target.files);
         this.setState({
             [e.target.name]: e.target.files[0]
         });

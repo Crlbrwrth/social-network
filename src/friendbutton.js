@@ -12,7 +12,6 @@ export default function FriendButton(props) {
                 const { data } = await axios.get(
                     `/check-request/${props.id}/json`
                 );
-                console.log("data pray: ", data);
                 data.isSender == true ? setIsSender(true) : setIsSender(false);
                 data.requestSent == true
                     ? setFriendReq(true)

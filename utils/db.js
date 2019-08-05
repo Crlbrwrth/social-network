@@ -13,6 +13,18 @@ exports.getFriendsAndWannabes = function(user_id) {
     );
 };
 
+exports.getFriends = function(user_id) {
+    return db.query(
+        `SELECT users.id AS uid, first, last, profile_pic
+        FROM users
+        JOIN friends
+        ON (accepted = true AND receiver_id = $1 AND sender_id = users.id)
+        OR (accepted = true AND sender_id = $1 AND receiver_id = users.id)
+        `,
+        [user_id]
+    );
+};
+
 exports.addUser = function(first, last, email, password) {
     return db.query(
         `INSERT INTO users (first, last, email, password) VALUES ($1, $2, $3, $4) RETURNING id`,

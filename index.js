@@ -89,8 +89,30 @@ app.get("/welcome", (req, res) => {
 
 app.get("/user/:id/json", async (req, res) => {
     try {
-        let result = await db.getOtherUser(req.params.id);
-        res.json(result.rows[0]);
+        const [userData, friendship, friends] = await Promise.all([
+            db.getOtherUser(req.params.id),
+            db.checkFriendship(req.params.id, req.session.user.id),
+            db.getFriends(req.params.id)
+        ]);
+        friendship.rowCount > 0 && friendship.rows[0].accepted
+            ? res.json({
+                first: userData.rows[0].first,
+                last: userData.rows[0].last,
+                profile_pic: userData.rows[0].profile_pic,
+                uid: userData.rows[0].uid,
+                bio: userData.rows[0].bio,
+                areFriends: true,
+                friends: friends.rows
+            })
+            : res.json({
+                first: userData.rows[0].first,
+                last: userData.rows[0].last,
+                profile_pic: userData.rows[0].profile_pic,
+                uid: userData.rows[0].uid,
+                bio: userData.rows[0].bio,
+                areFriends: false,
+                friends: false
+            });
     } catch (e) {
         console.log("err in /GET /user/:id/json", e.message);
     }
@@ -136,7 +158,6 @@ app.get("/add-friend/:id/json", async (req, res) => {
 });
 
 app.get("/accept-friend/:id/json", async (req, res) => {
-    console.log("got here");
     let resp = await db.acceptFriendRequest(req.session.user.id, req.params.id);
     if (resp.rowCount == 1) {
         res.json({ result: true });

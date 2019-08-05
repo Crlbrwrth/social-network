@@ -6,6 +6,7 @@ export default function(state = {}, action) {
         };
     }
     if (action.type == "ACCEPT_REQUEST") {
+        // console.log("action: ", action);
         state = {
             ...state,
             users: state.users.map(user => {
@@ -14,7 +15,7 @@ export default function(state = {}, action) {
                 }
                 return {
                     ...user,
-                    friend_status: action.type == "ACCEPT_REQUEST"
+                    accepted: action.type == "ACCEPT_REQUEST"
                 };
             })
         };
@@ -23,13 +24,10 @@ export default function(state = {}, action) {
         state = {
             ...state,
             users: state.users.map(user => {
-                if (user.id != action.id) {
+                if (user.uid != action.id) {
                     return user;
                 }
-                return {
-                    ...user,
-                    friend_status: action.type == "END_FRIENDSHIP"
-                };
+                return {};
             })
         };
     }

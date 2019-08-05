@@ -21,7 +21,6 @@ export default class App extends React.Component {
     async componentDidMount() {
         const { data } = await axios.get("/user");
         this.setState(data);
-        console.log("this.statev in App: ", this.state);
     }
 
     render() {

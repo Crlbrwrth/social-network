@@ -16,7 +16,6 @@ const store = createStore(
 
 let ele;
 if (location.pathname == "/welcome") {
-    console.log("in the if-statement");
     ele = <Welcome />;
 } else {
     ele = (

@@ -17,7 +17,6 @@ export default class Registration extends React.Component {
         this.submit = this.submit.bind(this);
     }
     submit() {
-        console.log("this: ", this.email, this.first, this.last, this.password);
         axios
             .post("/register", {
                 first: this.first,
@@ -26,7 +25,6 @@ export default class Registration extends React.Component {
                 password: this.password
             })
             .then(data => {
-                console.log("data: ", data.data);
                 if (data.data.success) {
                     location.replace("/");
                 } else {

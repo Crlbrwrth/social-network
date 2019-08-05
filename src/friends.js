@@ -22,10 +22,6 @@ export default function Friends(props) {
 
     const users = useSelector(state => state.users);
 
-    console.log("myFriends: ", myFriends);
-    console.log("wannabes: ", wannabes);
-    console.log("users: ", users);
-
     const realFriends = (
         <div className="real-friends">
             {myFriends &&
