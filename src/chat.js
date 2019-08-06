@@ -23,7 +23,7 @@ export function Chat() {
             <h2>Chat Component</h2>
             <div className="messages" ref={elemRef}>
                 {messages &&
-                    messages.reverse().map(m => (
+                    messages.map(m => (
                         <div className="message" key={m.id}>
                             <img src={m.profile_pic} />
                             <h4>

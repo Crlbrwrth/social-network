@@ -261,17 +261,18 @@ io.on("connection", async function(socket) {
     const userId = socket.request.session.user.id;
 
     let lastChats = await db.getChatMessages();
+    console.log("lastChats.rows: ", lastChats.rows);
     socket.emit("chatMessages", { lastChats: lastChats.rows });
 
     // dealing with new messages
     socket.on("chatMessage", async newMessage => {
         let { first, last, id, image } = socket.request.session.user;
         socket.emit("newChat", {
-            newMessage,
+            chat_text: newMessage,
             first,
             last,
             id,
-            image
+            profile_pic: image
         });
         await db.insertChat(newMessage, first, last, id, image);
 
