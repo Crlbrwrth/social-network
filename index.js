@@ -1,5 +1,7 @@
 const express = require("express");
 const app = express();
+const server = require("http").Server(app);
+const io = require("socket.io")(server, { origins: "localhost:8080" });
 const compression = require("compression");
 const db = require("./utils/db");
 const bc = require("./utils/bc");
@@ -27,12 +29,16 @@ var uploader = multer({
     }
 });
 
-app.use(
-    require("cookie-session")({
-        secret: "All my friends are nice",
-        maxAge: 1000 * 60 * 60 * 24 * 365
-    })
-);
+const cookieSession = require("cookie-session");
+const cookieSessionMiddleware = cookieSession({
+    secret: `I'm always angry.`,
+    maxAge: 1000 * 60 * 60 * 24 * 90
+});
+
+app.use(cookieSessionMiddleware);
+io.use(function(socket, next) {
+    cookieSessionMiddleware(socket.request, socket.request.res, next);
+});
 
 app.use(csurf());
 
@@ -63,14 +69,6 @@ app.use(express.static("./public"));
 app.get("/friends-and-wannabes", async (req, res) => {
     let output = await db.getFriendsAndWannabes(req.session.user.id);
     res.json({ output: output });
-});
-
-app.get("/end-a-friendship", (req, res) => {
-    //ppbly can use old route
-});
-
-app.get("/confirm-a-friendship", (req, res) => {
-    //ppbly can use old route
 });
 
 app.get("/last-users", async (req, res) => {
@@ -248,6 +246,42 @@ app.post("/bio", async (req, res) => {
     }
 });
 
-app.listen(8080, function() {
+server.listen(8080, function() {
     console.log("I'm listening.");
+});
+
+//SERVER SIDE SOCKET CODE
+
+io.on("connection", async function(socket) {
+    console.log(`socket with the id ${socket.id} is now connected`);
+    if (!socket.request.session.user.id) {
+        return socket.disconnect(true);
+    }
+
+    const userId = socket.request.session.user.id;
+
+    let lastChats = await db.getChatMessages();
+    socket.emit("chatMessages", { lastChats: lastChats.rows });
+
+    // dealing with new messages
+    socket.on("chatMessage", async newMessage => {
+        let { first, last, id, image } = socket.request.session.user;
+        socket.emit("newChat", {
+            newMessage,
+            first,
+            last,
+            id,
+            image
+        });
+        await db.insertChat(newMessage, first, last, id, image);
+
+        // const {data} = await db.insertChatMessage(newMessage, req.session.user.id)
+        // figure out who sent message
+        // make db query to get info about that user
+        // THEN -> create a new message Object that matches the object in
+        // the last ten chat messages
+
+        // emit that there is a new chat and pass the object.
+        // add this chat message to our database
+    });
 });

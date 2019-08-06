@@ -1,6 +1,8 @@
 var spicedPg = require("spiced-pg");
 var db = spicedPg("postgres:postgres:asus@localhost:5432/socialnetwork");
 
+// FRIENDS PAGE
+
 exports.getFriendsAndWannabes = function(user_id) {
     return db.query(
         `SELECT users.id AS uid, first, last, profile_pic, accepted
@@ -100,4 +102,19 @@ exports.checkFriendship = function(sender_id, receiver_id) {
         OR (sender_id = $2 AND receiver_id = $1)`,
         [sender_id, receiver_id]
     );
+};
+
+// CHAT
+
+exports.insertChat = function(chat_text, f, l, id, profile_pic) {
+    return db.query(
+        `INSERT INTO chat
+        (chat_text, first, last, user_id, profile_pic)
+        VALUES ($1, $2, $3, $4, $5)`,
+        [chat_text, f, l, id, profile_pic]
+    );
+};
+
+exports.getChatMessages = function() {
+    return db.query(`SELECT * FROM chat ORDER BY id DESC LIMIT 10`);
 };

@@ -5,6 +5,7 @@ import ProfilePic from "./profilepic";
 import Profile from "./profile";
 import OtherProfile from "./otherprofile";
 import FindPeople from "./findpeople";
+import { Chat } from "./chat";
 import { Route, BrowserRouter, Link } from "react-router-dom";
 
 import Friends from "./friends";
@@ -59,6 +60,7 @@ export default class App extends React.Component {
                             <Route path="/user/:id" component={OtherProfile} />
                             <Route path="/users" component={FindPeople} />
                             <Route path="/friends" component={Friends} />
+                            <Route path="/chat" component={Chat} />
                         </div>
                     </BrowserRouter>
 
@@ -83,7 +85,3 @@ export default class App extends React.Component {
         );
     }
 }
-
-// done={this.setState({})}
-// @UPLOADER: *done = this.setState({image})/>*/}
-// 1 Difference for image upload: update query to set new url

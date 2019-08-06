@@ -26,3 +26,14 @@ export async function endFriendship(id) {
         id
     };
 }
+
+export async function chatMessages(messages) {
+    return { type: "MESSAGES", messages };
+}
+
+export async function chatMessage(message) {
+    return {
+        type: "MESSAGE",
+        message
+    };
+}
