@@ -32,13 +32,13 @@ export default function(state = {}, action) {
         };
     }
     if (action.type == "MESSAGES") {
+        console.log("action: ", action);
         state = {
             ...state,
             messages: action.messages
         };
     }
     if (action.type == "MESSAGE") {
-        console.log("action: ", action);
         state = {
             ...state,
             messages: [...state.messages, action.message]

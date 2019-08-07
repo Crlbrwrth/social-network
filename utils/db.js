@@ -110,7 +110,8 @@ exports.insertChat = function(chat_text, f, l, id, profile_pic) {
     return db.query(
         `INSERT INTO chat
         (chat_text, first, last, user_id, profile_pic)
-        VALUES ($1, $2, $3, $4, $5)`,
+        VALUES ($1, $2, $3, $4, $5)
+        RETURNING *`,
         [chat_text, f, l, id, profile_pic]
     );
 };

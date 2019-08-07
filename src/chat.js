@@ -5,11 +5,15 @@ import { useSelector } from "react-redux";
 export function Chat() {
     let messages = useSelector(state => state && state.messages);
     const elemRef = useRef();
+    console.log("messages: ", messages);
 
-    useEffect(() => {
-        elemRef.current.scrollTop =
-            elemRef.current.scrollHeight - elemRef.current.clientHeight;
-    }, []);
+    useEffect(
+        () => {
+            elemRef.current.scrollTop =
+                elemRef.current.scrollHeight - elemRef.current.clientHeight;
+        },
+        [messages]
+    );
 
     const keyCheck = e => {
         if (e.key == "Enter") {

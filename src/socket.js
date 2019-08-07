@@ -12,7 +12,6 @@ export const init = store => {
         });
 
         socket.on("newChat", msg => {
-            console.log("msg 123: ", msg);
             store.dispatch(chatMessage(msg));
         });
     }

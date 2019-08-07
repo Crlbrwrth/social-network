@@ -41,8 +41,8 @@ img[alt="logo"] {
     display: block;
 }
 
-.chat-page {
-    height: 800px;
+.messages {
+    height: 400px;
     width: 800px;
     overflow-y: scroll;
 }

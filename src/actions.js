@@ -32,8 +32,5 @@ export async function chatMessages(messages) {
 }
 
 export async function chatMessage(message) {
-    return {
-        type: "MESSAGE",
-        message
-    };
+    return { type: "MESSAGE", message };
 }
