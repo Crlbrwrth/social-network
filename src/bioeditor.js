@@ -26,9 +26,9 @@ export default class BioEditor extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="bio-editor">
                 {this.state.editing && (
-                    <div>
+                    <div className="bio-textarea">
                         <textarea
                             name="textarea"
                             onChange={this.handleChange}
@@ -38,10 +38,7 @@ export default class BioEditor extends React.Component {
                 )}
 
                 {this.props.bio && (
-                    <div>
-                        <h3>Your astonishing Biography</h3>
-                        {<p className="bio-text">{this.props.bio}</p>}
-                    </div>
+                    <div className="bio-text">{<p>{this.props.bio}</p>}</div>
                 )}
 
                 {!this.state.editing && (

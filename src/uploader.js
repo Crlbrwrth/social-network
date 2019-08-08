@@ -26,6 +26,7 @@ export default class Uploader extends React.Component {
         return (
             <div id="uploader">
                 <h2>Add a profile picture</h2>
+                <label htmlFor="file">Choose Image</label>
                 <input
                     type="file"
                     id="file"

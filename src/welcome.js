@@ -11,13 +11,11 @@ export default class Welcome extends React.Component {
     render() {
         return (
             <HashRouter>
-                <div>
-                    <h2>Welcome to Social Network</h2>
-                    <p>This is before login/registration</p>
-                    <div>
-                        <Route exact path="/" component={Registration} />
-                        <Route path="/login" component={Login} />
-                    </div>
+                <div id="welcome">
+                    <h1>Welcome to the Ant-Lovers Society</h1>
+                    <div id="background-img" />
+                    <Route exact path="/" component={Registration} />
+                    <Route path="/login" component={Login} />
                 </div>
             </HashRouter>
         );

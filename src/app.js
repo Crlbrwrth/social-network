@@ -26,61 +26,77 @@ export default class App extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="app">
                 <nav>
                     <img src={"/logo.jpg"} alt="logo" />
-                    <ProfilePic
-                        first={this.state.first}
-                        last={this.state.last}
-                        image={this.state.image || "/default.png"}
-                        onClick={() => this.setState({ uploaderVisible: true })}
-                    />
-                </nav>
-                <main>
-                    <BrowserRouter>
-                        <div>
-                            <Route
-                                exact
-                                path="/"
-                                render={props => (
-                                    <Profile
-                                        bio={this.state.bio}
-                                        image={this.state.image}
-                                        first={this.state.first}
-                                        last={this.state.last}
-                                        updateBio={newBio => {
-                                            this.setState({
-                                                bio: newBio
-                                            });
-                                        }}
-                                    />
-                                )}
-                            />
-
-                            <Route path="/user/:id" component={OtherProfile} />
-                            <Route path="/users" component={FindPeople} />
-                            <Route path="/friends" component={Friends} />
-                            <Route path="/chat" component={Chat} />
-                        </div>
-                    </BrowserRouter>
-
-                    {!this.state.image && (
-                        <button onClick={this.state.onClick}>
-                            Update your profile image
-                        </button>
-                    )}
-
-                    {this.state.uploaderVisible && (
-                        <Uploader
-                            changeImage={imageUrl => {
-                                this.setState({
-                                    image: imageUrl,
-                                    uploaderVisible: false
-                                });
-                            }}
+                    <div className="nav-links">
+                        <a className="nav-link" href="/chat">
+                            <span>Chat</span>
+                        </a>
+                        <a className="nav-link" href="/">
+                            <span>Your Profile</span>
+                        </a>
+                        <a className="nav-link" href="/friends">
+                            <span>Your Friends</span>
+                        </a>
+                        <a className="nav-link" href="/users">
+                            <span>Find Friends</span>
+                        </a>
+                    </div>
+                    <div className="nav-pic">
+                        <ProfilePic
+                            first={this.state.first}
+                            last={this.state.last}
+                            image={this.state.image || "/default.png"}
+                            onClick={() =>
+                                this.setState({ uploaderVisible: true })
+                            }
                         />
-                    )}
-                </main>
+                    </div>
+                </nav>
+                <BrowserRouter>
+                    <div>
+                        <Route
+                            exact
+                            path="/"
+                            render={props => (
+                                <Profile
+                                    bio={this.state.bio}
+                                    image={this.state.image}
+                                    first={this.state.first}
+                                    last={this.state.last}
+                                    updateBio={newBio => {
+                                        this.setState({
+                                            bio: newBio
+                                        });
+                                    }}
+                                />
+                            )}
+                        />
+
+                        <Route path="/user/:id" component={OtherProfile} />
+                        <Route path="/users" component={FindPeople} />
+                        <Route path="/friends" component={Friends} />
+                        <Route path="/chat" component={Chat} />
+                    </div>
+                </BrowserRouter>
+
+                {!this.state.image && (
+                    <button onClick={this.state.onClick}>
+                        Update your profile image
+                    </button>
+                )}
+
+                {this.state.uploaderVisible && (
+                    <Uploader
+                        changeImage={imageUrl => {
+                            this.setState({
+                                image: imageUrl,
+                                uploaderVisible: false
+                            });
+                        }}
+                    />
+                )}
             </div>
         );
     }

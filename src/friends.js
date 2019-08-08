@@ -32,6 +32,7 @@ export default function Friends(props) {
                         </h4>
                         <img src={user.profile_pic} />
                         <button
+                            className="cancel"
                             onClick={e => dispatch(endFriendship(user.uid))}
                         >
                             End sacred Friendship
@@ -42,7 +43,7 @@ export default function Friends(props) {
     );
 
     const wannabeFriends = (
-        <div className="real-friends">
+        <div className="wannabe-friends">
             {wannabes &&
                 wannabes.map(user => (
                     <div className="friend" key={user.uid}>
@@ -61,11 +62,18 @@ export default function Friends(props) {
     );
 
     return (
-        <div className="friend-component">
-            <h2>We are your only Friends!</h2>
-            {realFriends}
-            <h2>We want to be your friend!</h2>
-            {wannabeFriends}
+        <div className="friend-component-wrapper">
+            <h1>Friends & Wannabes</h1>
+            <div className="friend-component">
+                <div className="friend-wrap">
+                    <h2>We are your only Friends!</h2>
+                    {realFriends}
+                </div>
+                <div className="wannabe-wrap">
+                    <h2>We want to be your friend!</h2>
+                    {wannabeFriends}
+                </div>
+            </div>
         </div>
     );
 }

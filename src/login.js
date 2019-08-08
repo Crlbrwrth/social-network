@@ -44,8 +44,7 @@ export default class Login extends React.Component {
 
     render() {
         return (
-            <div>
-                <h2>Please Log in</h2>
+            <div id="login">
                 {this.state.error && <div className="error">Oops!</div>}
                 <input
                     type="email"

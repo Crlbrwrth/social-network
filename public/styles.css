@@ -1,15 +1,211 @@
-body {
-    position: relative;
+@import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Domine&display=swap");
+
+/*GLOBAL*/
+
+img:hover {
+    transform: rotate(0.3deg);
+    border: 2px dotted #0d7377;
+    transition: 0.4s;
 }
 
-/* HEADER */
+img {
+    transition: 0.4s;
+}
+
+body {
+    margin: 0;
+    box-sizing: border-box;
+    min-width: 350px;
+    color: #212121;
+    font-size: 1.2em;
+    font-family: Roboto;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    font-family: Domine;
+    transition: 1s ease-out;
+}
+
+h1 {
+    padding-bottom: 1em;
+    margin-top: 100px;
+}
+
+h1:hover,
+h2:hover {
+    color: #0d7377;
+    transition: 4s;
+}
+
+button,
+label {
+    max-width: 35%;
+    margin: 30px auto;
+    border-style: none;
+    border-radius: 28px;
+    display: inline-block;
+    cursor: pointer;
+    background-color: #0d7377;
+    color: #14ffec;
+    font-size: 16px;
+    padding: 12px 18px;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #2f6627;
+    text-transform: uppercase;
+}
+
+button:hover,
+label:hover {
+    transition: 0.5s;
+    color: #0d7377;
+    background-color: #14ffec;
+}
+
+label {
+    margin-right: 1em;
+}
+
+.cancel:hover {
+    transition: 0.5s;
+    color: #14ffec;
+    background-color: #ed3833;
+}
+
+button:active {
+    position: relative;
+    top: 1px;
+}
+
+:focus {
+    outline: none;
+}
+
+a {
+    text-decoration: none;
+    color: #0d7377;
+}
+
+a:focus,
+a:hover {
+    background-color: rgba(20, 255, 236, 0.5);
+}
+
+input,
+textarea {
+    max-width: 50%;
+    min-width: 30%;
+    margin: 10px auto;
+    background-color: rgba(0, 0, 0, 0);
+    border-style: none;
+    border-bottom: 1px solid black;
+    padding: 5px;
+}
+
+::placeholder {
+    font-size: 1em;
+    color: rgba(0, 0, 0, 0.55);
+}
+
+input:focus,
+input,
+textarea {
+    outline: none;
+    color: #212121;
+    font-size: 1.2em;
+    font-family: Roboto;
+}
+
+input:focus,
+textarea:focus {
+    background-color: rgba(20, 255, 236, 0.5);
+}
+
+/* UPLOADER */
+
+#uploader {
+    position: absolute;
+    left: 20%;
+    right: 20%;
+    top: 20%;
+    bottom: 20%;
+    z-index: 2;
+    background-color: white;
+}
+
+/*LOGIN & REGISTRATION*/
+
+#welcome {
+    position: relative;
+    margin-top: 100px;
+    padding-top: 100px;
+    padding-bottom: 100px;
+}
+
+#background-img {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-image: url("./background.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.5;
+    z-index: -1;
+}
+
+#registration,
+#login {
+    display: flex;
+    flex-direction: column;
+}
+
+#uploader {
+    margin: 20px;
+    border: 1px solid black;
+}
+
+/* NAV */
 
 nav {
     height: 50px;
-    background-color: lightblue;
+    background-color: #0d7377;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+}
+
+.nav-link {
+    color: #14ffec;
+    display: inline;
+    padding: 5px;
+}
+
+.nav-pic {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 50px;
+    width: 50px;
+}
+
+.nav-links {
+    height: 50px;
+    padding: 0 50px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }
 
 main {
+    max-width: 1200px;
+    text-align: center;
+    margin: 0 auto;
 }
 
 nav img {
@@ -22,17 +218,71 @@ img[alt="logo"] {
     float: left;
 }
 
-/*MODALS*/
+/* PROFILE PAGE */
 
-#uploader {
-    margin: 20px;
+.profile img {
+    padding-top: 20px;
+    width: 333px;
+    height: 333px;
+}
+
+.bio-text p {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+textarea {
+    margin-top: 30px;
+    width: 333px;
+    height: 200px;
     border: 1px solid black;
 }
 
-.other-user img {
-    max-width: 200px;
-    margin: 20px;
+textarea:focus {
+    font-size: 1em;
 }
+
+.bio-textarea {
+    display: flex;
+    flex-direction: column;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+/* FRIENDS */
+
+.friend-component {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.friend {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.friend-wrap {
+    border-right: 1px dashed #14ffec;
+}
+
+.wannabe-wrap {
+    border-left: 1px dashed #14ffec;
+}
+
+.friend button {
+    max-width: 100%;
+}
+
+.friend-component img {
+    width: 170px;
+    height: 170px;
+    object-fit: cover;
+}
+
+/*?????*/
 
 .last-users-list img,
 .users-found-list img {
@@ -41,22 +291,106 @@ img[alt="logo"] {
     display: block;
 }
 
+/* FIND FRIENDS */
+
+#find-people {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.last-joined {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.find-friends {
+    margin-top: 3em;
+}
+
+.last-users-list,
+.users-found-list,
+.friends-friend {
+    margin: 0 10px;
+}
+
+.friends-result,
+.friends-friends {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+#find-people img,
+.friends-friend img {
+    width: 170px;
+    height: 170px;
+    object-fit: cover;
+}
+
+/* OTHER USER */
+
+.other-user h1 {
+    margin-bottom: 1em;
+    padding-bottom: 0;
+}
+
+.other-image {
+    margin: 2em;
+    width: 333px;
+    height: 333px;
+    object-fit: cover;
+}
+
+/* CHAT */
+
 .messages {
-    height: 400px;
-    width: 800px;
+    height: 555px;
+    max-width: 800px;
     overflow-y: scroll;
-}
-
-.chat-page img {
-    width: 50px;
-    height: 50px;
-}
-
-.chat-page h4,
-p {
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
 }
 
 .message {
-    border-bottom: 1px dashed black;
+    display: flex;
+    align-items: center;
+}
+
+.chat-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.chat-page img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+}
+
+.chat-page textarea {
+    height: 1.5em;
+}
+
+.chat-page textarea:focus {
+    font-size: 1.2em;
+}
+
+.chat-page h1 {
+    margin-bottom: 1em;
+    padding-bottom: 1em;
+}
+
+.chat-page h4 {
+    padding-left: 1em;
+}
+
+.message-text {
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-start;
+    text-align: left;
 }

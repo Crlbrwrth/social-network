@@ -35,43 +35,51 @@ export default function FindPeople(props) {
 
     return (
         <div id="find-people">
-            <h2>These individuals recently joined</h2>
-
-            {lastUsers &&
-                lastUsers.map((user, i) => {
-                    if (!user.profile_pic) {
-                        user.profile_pic = "logo.jpg";
-                    }
-                    return (
-                        <div className="last-users-list" key={i + 1}>
-                            <p>
-                                <strong>
-                                    {user.first} {user.last}
-                                </strong>
-                            </p>
-                            <img src={user.profile_pic} />
-                        </div>
-                    );
-                })}
-            <h3>Find your Friends</h3>
-            <input type="text" onChange={onChange} />
-
-            {users &&
-                users.map((user, i) => {
-                    if (!user.profile_pic) {
-                        user.profile_pic = "logo.jpg";
-                    }
-                    return (
-                        <div className="users-found-list" key={i + 1}>
-                            <p>
-                                <strong>
-                                    {user.first} {user.last}
-                                </strong>
-                            </p>
-                            <img src={user.profile_pic} />
-                        </div>
-                    );
-                })}
+            <h1>These individuals recently joined</h1>
+            <div className="last-joined">
+                {lastUsers &&
+                    lastUsers.map((user, i) => {
+                        if (!user.profile_pic) {
+                            user.profile_pic = "logo.jpg";
+                        }
+                        return (
+                            <div className="last-users-list" key={i + 1}>
+                                <p>
+                                    <strong>
+                                        {user.first} {user.last}
+                                    </strong>
+                                </p>
+                                <a href={"user/" + user.id}>
+                                    <img src={user.profile_pic} />
+                                </a>
+                            </div>
+                        );
+                    })}
+            </div>
+            <div className="find-friends">
+                <h3>Find your Friends</h3>
+                <input type="text" onChange={onChange} />
+            </div>
+            <div className="friends-result">
+                {users &&
+                    users.map((user, i) => {
+                        if (!user.profile_pic) {
+                            user.profile_pic = "logo.jpg";
+                        }
+                        return (
+                            <div className="users-found-list" key={i + 1}>
+                                <p>
+                                    <strong>
+                                        {user.first} {user.last}
+                                    </strong>
+                                </p>
+                                <a href={"user/" + user.id}>
+                                    <img src={user.profile_pic} />
+                                </a>
+                            </div>
+                        );
+                    })}
+            </div>
         </div>
     );
 }

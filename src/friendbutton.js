@@ -56,18 +56,21 @@ export default function FriendButton(props) {
 
     return (
         <div className="friend-button">
-            <h2>Manage Friendship</h2>
             {!friendReq && !isSender && (
                 <button onClick={addFriend}>Add to Friendlist</button>
             )}
             {friendReq && !reqAccepted && !isSender && (
-                <button onClick={cancelRequest}>Cancel Request</button>
+                <button className="cancel" onClick={cancelRequest}>
+                    Cancel Request
+                </button>
             )}
             {!reqAccepted && isSender && (
                 <button onClick={acceptRequest}>Accept Friend Request</button>
             )}
             {friendReq && reqAccepted && (
-                <button onClick={cancelRequest}>End Friendship</button>
+                <button className="cancel" onClick={cancelRequest}>
+                    End Friendship
+                </button>
             )}
         </div>
     );

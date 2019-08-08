@@ -24,16 +24,18 @@ export function Chat() {
     };
     return (
         <div className="chat-page">
-            <h2>Chat Component</h2>
+            <h1>Chatroom</h1>
             <div className="messages" ref={elemRef}>
                 {messages &&
                     messages.map(m => (
                         <div className="message" key={m.id}>
                             <img src={m.profile_pic} />
-                            <h4>
-                                {m.first} {m.last}:&nbsp;
-                            </h4>
-                            <p>{m.chat_text}</p>
+                            <div className="message-text">
+                                <h4>
+                                    {m.first} {m.last}:&nbsp;
+                                </h4>
+                                <p>{m.chat_text}</p>
+                            </div>
                         </div>
                     ))}
             </div>
