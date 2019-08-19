@@ -1,3 +1,5 @@
+// sudo service postgresql start
+
 var spicedPg = require("spiced-pg");
 var db = spicedPg("postgres:postgres:asus@localhost:5432/socialnetwork");
 
