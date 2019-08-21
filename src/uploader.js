@@ -6,6 +6,7 @@ export default class Uploader extends React.Component {
         super(props);
         this.submit = this.submit.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.hide = this.hide.bind(this);
     }
 
     async submit(e) {
@@ -14,6 +15,11 @@ export default class Uploader extends React.Component {
         formData.append("file", this.state.file);
         let image = await axios.post("/picture", formData);
         this.props.changeImage(image.data.url);
+    }
+
+    async hide(e) {
+        e.preventDefault();
+        await this.props.hideUploader();
     }
 
     handleChange(e) {
@@ -25,6 +31,9 @@ export default class Uploader extends React.Component {
     render() {
         return (
             <div id="uploader">
+                <span className="close-uploader" onClick={this.hide}>
+                    X
+                </span>
                 <h2>Add a profile picture</h2>
                 <label htmlFor="file">Choose Image</label>
                 <input

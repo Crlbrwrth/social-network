@@ -3,23 +3,30 @@
 
 /*GLOBAL*/
 
-img:hover {
-    transform: rotate(0.3deg);
-    border: 2px dotted #0d7377;
-    transition: 0.4s;
-}
-
-img {
-    transition: 0.4s;
-}
-
 body {
     margin: 0;
+    padding: 0;
     box-sizing: border-box;
     min-width: 350px;
     color: #212121;
     font-size: 1.2em;
     font-family: Roboto;
+    position: relative;
+}
+
+@media (max-width: 700px) {
+    body,
+    input,
+    button,
+    ::placeholder {
+        font-size: 1em;
+    }
+}
+
+main {
+    max-width: 1200px;
+    text-align: center;
+    margin: 0 auto;
 }
 
 h1,
@@ -32,141 +39,13 @@ h4 {
 
 h1 {
     padding-bottom: 1em;
-    margin-top: 100px;
+    padding-top: 100px;
 }
 
 h1:hover,
 h2:hover {
     color: #0d7377;
     transition: 4s;
-}
-
-button,
-label {
-    max-width: 35%;
-    margin: 30px auto;
-    border-style: none;
-    border-radius: 28px;
-    display: inline-block;
-    cursor: pointer;
-    background-color: #0d7377;
-    color: #14ffec;
-    font-size: 16px;
-    padding: 12px 18px;
-    text-decoration: none;
-    text-shadow: 0px 1px 0px #2f6627;
-    text-transform: uppercase;
-}
-
-button:hover,
-label:hover {
-    transition: 0.5s;
-    color: #0d7377;
-    background-color: #14ffec;
-}
-
-label {
-    margin-right: 1em;
-}
-
-.cancel:hover {
-    transition: 0.5s;
-    color: #14ffec;
-    background-color: #ed3833;
-}
-
-button:active {
-    position: relative;
-    top: 1px;
-}
-
-:focus {
-    outline: none;
-}
-
-a {
-    text-decoration: none;
-    color: #0d7377;
-}
-
-a:focus,
-a:hover {
-    background-color: rgba(20, 255, 236, 0.5);
-}
-
-input,
-textarea {
-    max-width: 50%;
-    min-width: 30%;
-    margin: 10px auto;
-    background-color: rgba(0, 0, 0, 0);
-    border-style: none;
-    border-bottom: 1px solid black;
-    padding: 5px;
-}
-
-::placeholder {
-    font-size: 1em;
-    color: rgba(0, 0, 0, 0.55);
-}
-
-input:focus,
-input,
-textarea {
-    outline: none;
-    color: #212121;
-    font-size: 1.2em;
-    font-family: Roboto;
-}
-
-input:focus,
-textarea:focus {
-    background-color: rgba(20, 255, 236, 0.5);
-}
-
-/* UPLOADER */
-
-#uploader {
-    position: absolute;
-    left: 20%;
-    right: 20%;
-    top: 20%;
-    bottom: 20%;
-    z-index: 2;
-    background-color: white;
-}
-
-/*LOGIN & REGISTRATION*/
-
-#welcome {
-    position: relative;
-    margin-top: 100px;
-    padding-top: 100px;
-    padding-bottom: 100px;
-}
-
-#background-img {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-image: url("./background.jpg");
-    background-position: center;
-    background-repeat: no-repeat;
-    opacity: 0.5;
-    z-index: -1;
-}
-
-#registration,
-#login {
-    display: flex;
-    flex-direction: column;
-}
-
-#uploader {
-    margin: 20px;
-    border: 1px solid black;
 }
 
 /* NAV */
@@ -202,20 +81,164 @@ nav {
     align-items: center;
 }
 
-main {
-    max-width: 1200px;
-    text-align: center;
-    margin: 0 auto;
+img[alt="logo"] {
+    float: left;
 }
 
 nav img {
     height: 50px;
     width: 50px;
+    object-fit: cover;
     float: right;
 }
 
-img[alt="logo"] {
-    float: left;
+/*FORMS*/
+
+button,
+label {
+    max-width: 35%;
+    margin: 30px auto;
+    border-style: none;
+    border-radius: 28px;
+    display: inline-block;
+    cursor: pointer;
+    background-color: #0d7377;
+    color: #14ffec;
+    font-size: 16px;
+    padding: 12px 18px;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #2f6627;
+    text-transform: uppercase;
+}
+
+input,
+textarea {
+    max-width: 50%;
+    min-width: 30%;
+    margin: 10px auto 5px auto;
+    background-color: rgba(0, 0, 0, 0);
+    border-style: none;
+    border-bottom: 1px solid black;
+    padding: 5px;
+    padding-bottom: 0;
+}
+
+label {
+    margin-right: 1em;
+}
+
+input:focus,
+input,
+textarea {
+    outline: none;
+    color: #212121;
+    font-size: 1.2em;
+    font-family: Roboto;
+}
+
+input:focus,
+textarea:focus {
+    background-color: rgba(20, 255, 236, 0.5);
+}
+
+button:hover,
+label:hover {
+    transition: 0.5s;
+    color: #0d7377;
+    background-color: #14ffec;
+}
+
+button:active {
+    position: relative;
+    top: 1px;
+}
+
+.cancel:hover {
+    transition: 0.5s;
+    color: #14ffec;
+    background-color: #ed3833;
+}
+
+:focus {
+    outline: none;
+}
+
+::placeholder {
+    font-size: 0.8em;
+    color: rgba(0, 0, 0, 0.55);
+}
+
+/*LINKS*/
+
+a {
+    text-decoration: none;
+    color: #0d7377;
+}
+
+a:focus,
+a:hover {
+    background-color: rgba(20, 255, 236, 0.5);
+}
+
+/*IMAGES*/
+
+img {
+    transition: 0.2s;
+}
+
+img:hover {
+    transform: rotate(0.3deg);
+    border: 2px dotted #0d7377;
+    transition: 0.4s;
+}
+
+/*LOGIN & REGISTRATION*/
+
+#welcome {
+    position: relative;
+
+    /* margin-top: 100px;
+    padding-top: 100px;
+    padding-bottom: 100px; */
+}
+
+#background-img {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-image: url("./background.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.5;
+    z-index: -1;
+}
+
+#registration,
+#login {
+    display: flex;
+    flex-direction: column;
+}
+
+/* IMAGE UPLOADER */
+
+#uploader {
+    margin: 20px;
+    border: 1px solid black;
+    position: absolute;
+    left: 20%;
+    right: 20%;
+    top: 20%;
+    bottom: 20%;
+    z-index: 2;
+    background-color: white;
+}
+
+.close-uploader {
+    position: absolute;
+    right: 5%;
+    top: 5%;
 }
 
 /* PROFILE PAGE */
@@ -224,6 +247,7 @@ img[alt="logo"] {
     padding-top: 20px;
     width: 333px;
     height: 333px;
+    object-fit: cover;
 }
 
 .bio-text p {
@@ -282,15 +306,6 @@ input[type="file"] {
     object-fit: cover;
 }
 
-/*?????*/
-
-.last-users-list img,
-.users-found-list img {
-    width: 70px;
-    height: 70px;
-    display: block;
-}
-
 /* FIND FRIENDS */
 
 #find-people {
@@ -320,6 +335,17 @@ input[type="file"] {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
+}
+
+.friends-result {
+    margin-bottom: 20px;
+}
+
+.last-users-list img,
+.users-found-list img {
+    width: 70px;
+    height: 70px;
+    display: block;
 }
 
 #find-people img,

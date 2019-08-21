@@ -70,6 +70,7 @@ export default class App extends React.Component {
                                             bio: newBio
                                         });
                                     }}
+                                    onClick={this.state.onClick}
                                 />
                             )}
                         />
@@ -81,17 +82,16 @@ export default class App extends React.Component {
                     </div>
                 </BrowserRouter>
 
-                {!this.state.image && (
-                    <button onClick={this.state.onClick}>
-                        Update your profile image
-                    </button>
-                )}
-
                 {this.state.uploaderVisible && (
                     <Uploader
                         changeImage={imageUrl => {
                             this.setState({
                                 image: imageUrl,
+                                uploaderVisible: false
+                            });
+                        }}
+                        hideUploader={() => {
+                            this.setState({
                                 uploaderVisible: false
                             });
                         }}

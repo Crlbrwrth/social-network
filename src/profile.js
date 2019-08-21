@@ -13,12 +13,11 @@ export default function Profile(props) {
                 image={props.image}
                 onClick={props.onClick}
             />
+            <button onClick={props.onClick}>
+                {props.image && "Change Profile Picture"}
+                {!props.image && "Upload a Profile Picture"}
+            </button>
             <BioEditor bio={props.bio} changeBio={props.updateBio} />
         </div>
     );
 }
-
-// <div>
-//     <h3>Your Bio</h3>
-//     <p>{props.bio}</p>
-// </div>
