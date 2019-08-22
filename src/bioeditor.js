@@ -17,11 +17,15 @@ export default class BioEditor extends React.Component {
 
     async submit(e) {
         e.preventDefault();
-        let returned = await axios.post("/bio", {
-            bio: this.state.newBio
-        });
-        this.state.editing = false;
-        this.props.changeBio(returned.data.bio);
+        try {
+            let returned = await axios.post("/bio", {
+                bio: this.state.newBio
+            });
+            this.state.editing = false;
+            this.props.changeBio(returned.data.bio);
+        } catch (e) {
+            console.log("err in bioeditor.js POST /bio: ", e.message);
+        }
     }
 
     render() {

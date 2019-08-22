@@ -71,13 +71,21 @@ app.use(express.static("./public"));
 // ROUTES
 
 app.get("/friends-and-wannabes", async (req, res) => {
-    let { rows } = await db.getFriendsAndWannabes(req.session.user.id);
-    res.json({ rows });
+    try {
+        let { rows } = await db.getFriendsAndWannabes(req.session.user.id);
+        res.json({ rows });
+    } catch (e) {
+        console.log("err in GET /friends-and-wannabes: ", e.message);
+    }
 });
 
 app.get("/last-users", async (req, res) => {
-    let resp = await db.getLastUsers();
-    res.json({ result: resp.rows });
+    try {
+        let resp = await db.getLastUsers();
+        res.json({ result: resp.rows });
+    } catch (e) {
+        console.log("err in GET /last-users: ", e.message);
+    }
 });
 
 app.get("/user", (req, res) => {
@@ -116,13 +124,17 @@ app.get("/user/:id/json", async (req, res) => {
                 friends: false
             });
     } catch (e) {
-        console.log("err in /GET /user/:id/json", e.message);
+        console.log("err in GET /user/:id/json", e.message);
     }
 });
 
 app.get("/find-users/:str/json", async (req, res) => {
-    let result = await db.getUsersByName(req.params.str);
-    res.json({ data: result.rows });
+    try {
+        let result = await db.getUsersByName(req.params.str);
+        res.json({ data: result.rows });
+    } catch (e) {
+        console.log("err in GET /find-users/:str...: ", e.message);
+    }
 });
 
 //FRIENDSHIP BUTTON REQUESTS
@@ -132,7 +144,6 @@ app.get("/check-request/:id/json", async (req, res) => {
     isSender = requestSent = friendship = false;
     try {
         let resp = await db.checkFriendship(req.params.id, req.session.user.id);
-        ///
         if (resp.rows[0].accepted == true) {
             friendship = isSender = requestSent = true;
         } else if (resp.rows[0].sender_id == req.session.user.id) {
@@ -146,25 +157,39 @@ app.get("/check-request/:id/json", async (req, res) => {
             friendship: friendship
         });
     } catch (e) {
-        console.log("err in check request route: ", e.message);
+        console.log("err in GET /check-request/:id/json: ", e.message);
     }
 });
 
 app.get("/add-friend/:id/json", async (req, res) => {
-    let resp = await db.insertFriendRequest(req.session.user.id, req.params.id);
-    if (resp.rowCount == 1) {
-        res.json({ result: true });
-    } else {
-        res.json({ result: false });
+    try {
+        let resp = await db.insertFriendRequest(
+            req.session.user.id,
+            req.params.id
+        );
+        if (resp.rowCount == 1) {
+            res.json({ result: true });
+        } else {
+            res.json({ result: false });
+        }
+    } catch (e) {
+        console.log("err in GET /add-friend/:id/json: ", e.message);
     }
 });
 
 app.get("/accept-friend/:id/json", async (req, res) => {
-    let resp = await db.acceptFriendRequest(req.session.user.id, req.params.id);
-    if (resp.rowCount == 1) {
-        res.json({ result: true });
-    } else {
-        res.json({ result: false });
+    try {
+        let resp = await db.acceptFriendRequest(
+            req.session.user.id,
+            req.params.id
+        );
+        if (resp.rowCount == 1) {
+            res.json({ result: true });
+        } else {
+            res.json({ result: false });
+        }
+    } catch (e) {
+        console.log("err in GET /accept-friend/:id/json: ", e.message);
     }
 });
 
@@ -196,7 +221,7 @@ app.post("/register", async (req, res) => {
         };
         res.json({ success: true });
     } catch (e) {
-        console.log("err in post register route", e.message);
+        console.log("err in POST /register: ", e.message);
     }
 });
 
@@ -226,16 +251,21 @@ app.post("/login", async (req, res) => {
         }
     } catch (e) {
         res.sendStatus(500);
-        console.log("err in post login route", e.message);
+        console.log("err in POST /login: ", e.message);
     }
 });
 
 app.post("/picture", uploader.single("file"), s3.upload, async (req, res) => {
     if (req.file) {
-        let url = "https://s3.amazonaws.com/spicedling/" + req.file.filename;
-        await db.addPic(url, req.session.user.id);
-        req.session.user.image = url;
-        res.json({ url: url });
+        try {
+            let url =
+                "https://s3.amazonaws.com/spicedling/" + req.file.filename;
+            await db.addPic(url, req.session.user.id);
+            req.session.user.image = url;
+            res.json({ url: url });
+        } catch (e) {
+            console.log("err in POST /picture: ", e.message);
+        }
     }
 });
 
@@ -246,7 +276,7 @@ app.post("/bio", async (req, res) => {
         req.session.user.bio = bio;
         res.json({ bio: bio });
     } catch (e) {
-        console.log("err in post /bio", e.message);
+        console.log("err in POST /bio: ", e.message);
     }
 });
 
@@ -268,8 +298,12 @@ io.on("connection", async function(socket) {
     socket.emit("chatMessages", { lastChats: lastChats.rows.reverse() });
 
     socket.on("chatMessage", async newMessage => {
-        let { first, last, id, image } = socket.request.session.user;
-        let data = await db.insertChat(newMessage, first, last, id, image);
-        io.sockets.emit("newChat", data.rows[0]);
+        try {
+            let { first, last, id, image } = socket.request.session.user;
+            let data = await db.insertChat(newMessage, first, last, id, image);
+            io.sockets.emit("newChat", data.rows[0]);
+        } catch (e) {
+            console.log("err in SOCKET.on chatMessage: ", e.message);
+        }
     });
 });

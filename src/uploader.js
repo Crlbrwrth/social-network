@@ -14,15 +14,19 @@ export default class Uploader extends React.Component {
 
     async submit(e) {
         e.preventDefault();
-        var formData = new FormData();
-        formData.append("file", this.state.file);
-        let image = await axios.post("/picture", formData);
-        this.props.changeImage(image.data.url);
+        try {
+            var formData = new FormData();
+            formData.append("file", this.state.file);
+            let image = await axios.post("/picture", formData);
+            this.props.changeImage(image.data.url);
+        } catch (e) {
+            console.log("err in uploader.js POST /picture: ", e.message);
+        }
     }
 
-    async hide(e) {
+    hide(e) {
         e.preventDefault();
-        await this.props.hideUploader();
+        this.props.hideUploader();
     }
 
     handleChange(e) {

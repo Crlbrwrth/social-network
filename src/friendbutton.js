@@ -9,16 +9,25 @@ export default function FriendButton(props) {
     useEffect(
         () => {
             (async () => {
-                const { data } = await axios.get(
-                    `/check-request/${props.id}/json`
-                );
-                data.isSender == true ? setIsSender(true) : setIsSender(false);
-                data.requestSent == true
-                    ? setFriendReq(true)
-                    : setFriendReq(false);
-                data.friendship == true
-                    ? setReqAccepted(true)
-                    : setReqAccepted(false);
+                try {
+                    const { data } = await axios.get(
+                        `/check-request/${props.id}/json`
+                    );
+                    data.isSender == true
+                        ? setIsSender(true)
+                        : setIsSender(false);
+                    data.requestSent == true
+                        ? setFriendReq(true)
+                        : setFriendReq(false);
+                    data.friendship == true
+                        ? setReqAccepted(true)
+                        : setReqAccepted(false);
+                } catch (e) {
+                    console.log(
+                        "err in friendbutton.js GET /check-request...: ",
+                        e.message
+                    );
+                }
             })();
         },
         [props.id]

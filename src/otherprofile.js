@@ -8,9 +8,16 @@ export default class OtherProfile extends React.Component {
         this.state = {};
     }
     async componentDidMount() {
-        const id = this.props.match.params.id;
-        const { data } = await axios.get(`/user/${id}/json`);
-        await this.setState(data);
+        try {
+            const id = this.props.match.params.id;
+            const { data } = await axios.get(`/user/${id}/json`);
+            await this.setState(data);
+        } catch (e) {
+            console.log(
+                "err in otherprofile.js GET //user/${id}/json",
+                e.message
+            );
+        }
     }
     render() {
         return (

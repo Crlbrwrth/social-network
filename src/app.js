@@ -20,8 +20,12 @@ export default class App extends React.Component {
     }
 
     async componentDidMount() {
-        const { data } = await axios.get("/user");
-        this.setState(data);
+        try {
+            const { data } = await axios.get("/user");
+            this.setState(data);
+        } catch (e) {
+            console.log("err in app.js GET /user: ", e.message);
+        }
     }
 
     render() {

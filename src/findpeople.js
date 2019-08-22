@@ -8,8 +8,15 @@ export default function FindPeople(props) {
 
     useEffect(() => {
         (async () => {
-            let { data } = await axios.get("/last-users");
-            setLastUsers(data.result);
+            try {
+                let { data } = await axios.get("/last-users");
+                setLastUsers(data.result);
+            } catch (e) {
+                console.log(
+                    "err in findpeople.js GET /last-users: ",
+                    e.message
+                );
+            }
         })();
     }, []);
 
@@ -18,9 +25,18 @@ export default function FindPeople(props) {
             let ignore;
             (async () => {
                 if (val) {
-                    let { data } = await axios.get(`/find-users/${val}/json`);
-                    if (!ignore) {
-                        setUsers(data.data);
+                    try {
+                        let { data } = await axios.get(
+                            `/find-users/${val}/json`
+                        );
+                        if (!ignore) {
+                            setUsers(data.data);
+                        }
+                    } catch (e) {
+                        console.log(
+                            "err in findpeople.js GET /find-users...: ",
+                            e.message
+                        );
                     }
                 }
             })();
