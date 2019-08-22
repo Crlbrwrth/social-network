@@ -225,13 +225,12 @@ img:hover {
 
 #uploader {
     margin: 20px;
-    border: 1px solid black;
     position: absolute;
-    left: 20%;
-    right: 20%;
-    top: 20%;
-    bottom: 20%;
+    left: 20vw;
+    right: 20vw;
+    top: 20vh;
     z-index: 2;
+    border: 2px solid #0d7377;
     background-color: white;
 }
 

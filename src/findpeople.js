@@ -15,16 +15,18 @@ export default function FindPeople(props) {
 
     useEffect(
         () => {
+            let ignore;
             (async () => {
                 if (val) {
-                    let sameInput = true;
                     let { data } = await axios.get(`/find-users/${val}/json`);
-                    setUsers(data.data);
-                    return () => {
-                        sameInput = false;
-                    };
+                    if (!ignore) {
+                        setUsers(data.data);
+                    }
                 }
             })();
+            return () => {
+                ignore = true;
+            };
         },
         [val]
     );

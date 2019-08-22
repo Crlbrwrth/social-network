@@ -1,11 +1,3 @@
-////////////
-// PART 1 //
-////////////
-//
-// "if url is /welcome, user is logged out, else logged in"(
-//     "in start.js, decide whether user is logged in"
-// )("2 Components needed: Welcome & Registration");
-
 import React from "react";
 import axios from "./axios";
 import { Link } from "react-router-dom";
@@ -36,8 +28,6 @@ export default class Registration extends React.Component {
 
     handleChange(e) {
         this[e.target.name] = e.target.value;
-        //you could also put these informations in state
-        // console.log("e.target.value", e.target.value);
     }
 
     render() {

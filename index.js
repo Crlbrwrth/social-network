@@ -1,3 +1,5 @@
+//REQUIREMENTS
+
 const express = require("express");
 const app = express();
 const server = require("http").Server(app);
@@ -11,6 +13,10 @@ var multer = require("multer");
 var uidSafe = require("uid-safe");
 var path = require("path");
 const s3 = require("./utils/s3.js");
+const cookieSession = require("cookie-session");
+
+//MIDDLEWARE
+
 var diskStorage = multer.diskStorage({
     destination: function(req, file, callback) {
         callback(null, __dirname + "/uploads");
@@ -29,12 +35,10 @@ var uploader = multer({
     }
 });
 
-const cookieSession = require("cookie-session");
 const cookieSessionMiddleware = cookieSession({
     secret: `I'm always angry.`,
     maxAge: 1000 * 60 * 60 * 24 * 90
 });
-
 app.use(cookieSessionMiddleware);
 io.use(function(socket, next) {
     cookieSessionMiddleware(socket.request, socket.request.res, next);
@@ -64,11 +68,11 @@ if (process.env.NODE_ENV != "production") {
 
 app.use(express.static("./public"));
 
-// Redux routes on /friends
+// ROUTES
 
 app.get("/friends-and-wannabes", async (req, res) => {
-    let output = await db.getFriendsAndWannabes(req.session.user.id);
-    res.json({ output: output });
+    let { rows } = await db.getFriendsAndWannabes(req.session.user.id);
+    res.json({ rows });
 });
 
 app.get("/last-users", async (req, res) => {
@@ -253,17 +257,16 @@ server.listen(8080, function() {
 //SERVER SIDE SOCKET CODE
 
 io.on("connection", async function(socket) {
-    console.log(`socket with the id ${socket.id} is now connected`);
+    // console.log(`socket with the id ${socket.id} is now connected`);
     if (!socket.request.session.user.id) {
         return socket.disconnect(true);
     }
 
-    const userId = socket.request.session.user.id;
+    // const userId = socket.request.session.user.id;
 
     let lastChats = await db.getChatMessages();
     socket.emit("chatMessages", { lastChats: lastChats.rows.reverse() });
 
-    // dealing with new messages
     socket.on("chatMessage", async newMessage => {
         let { first, last, id, image } = socket.request.session.user;
         let data = await db.insertChat(newMessage, first, last, id, image);

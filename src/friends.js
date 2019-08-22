@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "./axios";
 import { retrieveList, acceptRequest, endFriendship } from "./actions";
 
 export default function Friends(props) {
@@ -30,10 +29,12 @@ export default function Friends(props) {
                         <h4>
                             {user.first} {user.last}
                         </h4>
-                        <img src={user.profile_pic} />
+                        <a href={"user/" + user.uid}>
+                            <img src={user.profile_pic} />
+                        </a>
                         <button
                             className="cancel"
-                            onClick={e => dispatch(endFriendship(user.uid))}
+                            onClick={() => dispatch(endFriendship(user.uid))}
                         >
                             End sacred Friendship
                         </button>
@@ -50,7 +51,9 @@ export default function Friends(props) {
                         <h4>
                             {user.first} {user.last}
                         </h4>
-                        <img src={user.profile_pic} />
+                        <a href={"user/" + user.uid}>
+                            <img src={user.profile_pic} />
+                        </a>
                         <button
                             onClick={e => dispatch(acceptRequest(user.uid))}
                         >

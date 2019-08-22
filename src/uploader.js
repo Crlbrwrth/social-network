@@ -7,6 +7,9 @@ export default class Uploader extends React.Component {
         this.submit = this.submit.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.hide = this.hide.bind(this);
+        this.state = {
+            chosen: false
+        };
     }
 
     async submit(e) {
@@ -24,7 +27,8 @@ export default class Uploader extends React.Component {
 
     handleChange(e) {
         this.setState({
-            [e.target.name]: e.target.files[0]
+            [e.target.name]: e.target.files[0],
+            chosen: true
         });
     }
 
@@ -35,7 +39,9 @@ export default class Uploader extends React.Component {
                     X
                 </span>
                 <h2>Add a profile picture</h2>
-                <label htmlFor="file">Choose Image</label>
+                {!this.state.chosen && (
+                    <label htmlFor="file">Choose Image</label>
+                )}
                 <input
                     type="file"
                     id="file"
@@ -43,7 +49,13 @@ export default class Uploader extends React.Component {
                     accept="image/*"
                     onChange={this.handleChange}
                 />
-                <button onClick={this.submit}>Upload Image</button>
+                {this.state.chosen && (
+                    <div>
+                        <br />
+                        <h3>Image successfully chosen</h3>
+                        <button onClick={this.submit}>Upload Image</button>
+                    </div>
+                )}
             </div>
         );
     }

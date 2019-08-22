@@ -6,7 +6,6 @@ export default function(state = {}, action) {
         };
     }
     if (action.type == "ACCEPT_REQUEST") {
-        // console.log("action: ", action);
         state = {
             ...state,
             users: state.users.map(user => {
@@ -32,7 +31,6 @@ export default function(state = {}, action) {
         };
     }
     if (action.type == "MESSAGES") {
-        console.log("action: ", action);
         state = {
             ...state,
             messages: action.messages

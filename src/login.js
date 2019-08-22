@@ -12,19 +12,6 @@ export default class Login extends React.Component {
         this[e.target.name] = e.target.value;
     }
 
-    // submit() {
-    //     console.log(this.email, this.password);
-    //     axios
-    //         .post("/login", {
-    //             email: this.email,
-    //             password: this.password
-    //         })
-    //         .then(data => {
-    //             if (data.data.success) location.replace("/");
-    //         })
-    //         .catch(err => console.log("err in login.js: ", err.message));
-    // }
-
     async submit() {
         try {
             let postReq = await axios.post("/login", {
@@ -38,8 +25,6 @@ export default class Login extends React.Component {
             console.log("err in login post route login.js");
             this.setState({ error: true });
         }
-
-        // .catch(err => console.log("err in login.js: ", err.message));
     }
 
     render() {

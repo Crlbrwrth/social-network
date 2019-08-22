@@ -65,6 +65,7 @@ export default class App extends React.Component {
                                     image={this.state.image}
                                     first={this.state.first}
                                     last={this.state.last}
+                                    uploaderVisible={this.state.uploaderVisible}
                                     updateBio={newBio => {
                                         this.setState({
                                             bio: newBio

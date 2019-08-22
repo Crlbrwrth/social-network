@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 export function Chat() {
     let messages = useSelector(state => state && state.messages);
     const elemRef = useRef();
-    console.log("messages: ", messages);
 
     useEffect(
         () => {
